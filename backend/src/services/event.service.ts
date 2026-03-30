@@ -1,0 +1,333 @@
+import { prisma } from "../lib/prisma.js";
+import type { CreateEventInput, UpdateEventInput } from "../schemas/event.schema.js";
+import type { SearchInput } from "../schemas/common.schema.js";
+
+const organizerSelect = {
+  id: true,
+  name: true,
+  email: true,
+};
+
+async function create(data: CreateEventInput, organizerId: string) {
+  const { date, ...rest } = data;
+  const parsedDate = new Date(date);
+
+  const event = await prisma.event.create({
+    data: {
+      ...rest,
+      date: parsedDate,
+      organizerId,
+    },
+    include: {
+      organizer: { select: organizerSelect },
+    },
+  });
+
+  return event;
+}
+
+async function list(query: SearchInput) {
+  const { page, limit, search, visibility, type, category, sortBy, sortOrder } =
+    query;
+
+  const where: any = {};
+  const andConditions: any[] = [];
+
+  if (search) {
+    andConditions.push({
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { organizer: { name: { contains: search, mode: "insensitive" } } },
+      ],
+    });
+  }
+
+  // Default to PUBLIC — PRIVATE events are hidden from public listings
+  andConditions.push({ visibility: visibility || "PUBLIC" });
+
+  if (type) {
+    andConditions.push({ type });
+  }
+
+  if (category) {
+    andConditions.push({ category });
+  }
+
+  if (andConditions.length > 0) {
+    where.AND = andConditions;
+  }
+
+  const [events, total] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { [sortBy]: sortOrder },
+      include: {
+        organizer: { select: organizerSelect },
+        _count: { select: { registrations: true } },
+      },
+    }),
+    prisma.event.count({ where }),
+  ]);
+
+  return {
+    events,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+}
+
+async function getById(eventId: string, userId?: string) {
+  const [event, reviewStats] = await Promise.all([
+    prisma.event.findUnique({
+      where: { id: eventId },
+      include: {
+        organizer: { select: organizerSelect },
+        _count: { select: { registrations: true } },
+      },
+    }),
+    prisma.review.aggregate({
+      where: { eventId },
+      _avg: { rating: true },
+      _count: { rating: true },
+    }),
+  ]);
+
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+
+  // Include user's registration status if authenticated
+  let userRegistration = null;
+  if (userId) {
+    const reg = await prisma.registration.findFirst({
+      where: { eventId: event.id, userId },
+      select: { id: true, status: true },
+    });
+    userRegistration = reg;
+  }
+
+  return {
+    ...event,
+    averageRating: reviewStats._avg.rating ?? 0,
+    reviewCount: reviewStats._count.rating,
+    userRegistration,
+  };
+}
+
+async function update(
+  eventId: string,
+  data: UpdateEventInput,
+  userId: string,
+) {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+
+  if (event.organizerId !== userId) {
+    throw {
+      status: 403,
+      message: "You are not the organizer of this event",
+      code: "FORBIDDEN",
+    };
+  }
+
+  // Validate PAID+fee consistency on merged state (schema only checks provided fields)
+  const mergedType = data.type ?? event.type;
+  const mergedFee = data.fee ?? event.fee;
+  if (mergedType === "PAID" && mergedFee <= 0) {
+    throw {
+      status: 422,
+      message: "Paid events must have a fee greater than 0",
+      code: "VALIDATION_ERROR",
+    };
+  }
+
+  const updated = await prisma.event.update({
+    where: { id: eventId },
+    data: {
+      ...data,
+      ...(data.date && { date: new Date(data.date) }),
+    },
+    include: {
+      organizer: { select: organizerSelect },
+    },
+  });
+
+  return updated;
+}
+
+async function remove(eventId: string, userId: string) {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+
+  if (event.organizerId !== userId) {
+    throw {
+      status: 403,
+      message: "You are not the organizer of this event",
+      code: "FORBIDDEN",
+    };
+  }
+
+  await prisma.event.delete({ where: { id: eventId } });
+
+  return { message: "Event deleted successfully" };
+}
+
+async function getMyEvents(userId: string, page = 1, limit = 10) {
+  const skip = (page - 1) * limit;
+  const where = { organizerId: userId };
+  const [events, total] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        organizer: { select: organizerSelect },
+        _count: { select: { registrations: true } },
+      },
+    }),
+    prisma.event.count({ where }),
+  ]);
+  return { events, total, page, limit, totalPages: Math.ceil(total / limit) };
+}
+
+async function adminList(query: SearchInput) {
+  const { page, limit, search, visibility, type, category, sortBy, sortOrder } =
+    query;
+
+  const where: any = {};
+  const andConditions: any[] = [];
+
+  if (search) {
+    andConditions.push({
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { organizer: { name: { contains: search, mode: "insensitive" } } },
+      ],
+    });
+  }
+
+  // Admin sees ALL events — only filter by visibility if explicitly requested
+  if (visibility) {
+    andConditions.push({ visibility });
+  }
+
+  if (type) {
+    andConditions.push({ type });
+  }
+
+  if (category) {
+    andConditions.push({ category });
+  }
+
+  if (andConditions.length > 0) {
+    where.AND = andConditions;
+  }
+
+  const [events, total] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { [sortBy]: sortOrder },
+      include: {
+        organizer: { select: organizerSelect },
+        _count: { select: { registrations: true } },
+      },
+    }),
+    prisma.event.count({ where }),
+  ]);
+
+  return {
+    events,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+}
+
+async function getFeatured(userId?: string) {
+  // Try to find admin-selected featured event (upcoming)
+  let event = await prisma.event.findFirst({
+    where: { isFeatured: true, date: { gte: new Date() } },
+    include: {
+      organizer: { select: organizerSelect },
+      _count: { select: { registrations: true } },
+    },
+  });
+
+  // Fallback: next upcoming public event
+  if (!event) {
+    event = await prisma.event.findFirst({
+      where: { visibility: "PUBLIC", date: { gte: new Date() } },
+      orderBy: { date: "asc" },
+      include: {
+        organizer: { select: organizerSelect },
+        _count: { select: { registrations: true } },
+      },
+    });
+  }
+
+  if (!event) return null;
+
+  let userRegistration = null;
+  if (userId) {
+    userRegistration = await prisma.registration.findFirst({
+      where: { eventId: event.id, userId },
+      select: { id: true, status: true },
+    });
+  }
+
+  return { ...event, userRegistration };
+}
+
+async function setFeatured(eventId: string) {
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+
+  // Transaction: unset all featured, then set the chosen one
+  await prisma.$transaction([
+    prisma.event.updateMany({ where: { isFeatured: true }, data: { isFeatured: false } }),
+    prisma.event.update({ where: { id: eventId }, data: { isFeatured: true } }),
+  ]);
+
+  return { message: "Event set as featured", eventId };
+}
+
+async function unsetFeatured(eventId: string) {
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+
+  await prisma.event.update({ where: { id: eventId }, data: { isFeatured: false } });
+  return { message: "Event unfeatured", eventId };
+}
+
+async function adminDelete(eventId: string) {
+  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  if (!event) {
+    throw { status: 404, message: "Event not found", code: "NOT_FOUND" };
+  }
+  await prisma.event.delete({ where: { id: eventId } });
+  return { message: "Event deleted" };
+}
+
+export const eventService = { create, list, getById, update, remove, getMyEvents, adminList, getFeatured, setFeatured, unsetFeatured, adminDelete };
