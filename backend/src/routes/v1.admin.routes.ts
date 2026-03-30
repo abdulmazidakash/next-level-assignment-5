@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { prisma } from "../lib/prisma.js";
-import { requireAdmin } from "../middleware/auth.js";
+import { requireAdmin } from "../middlewares/auth.js";
 import { catchAsync } from "../utils/catch-async.js";
 import type { Request, Response } from "express";
 
