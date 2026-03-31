@@ -11,7 +11,7 @@ import { errorHandler } from "./middlewares/error-handler";
 import healthRoutes from "./routes/health.routes";
 import v1AuthRoutes from "./routes/v1.auth.routes";
 import eventRoutes, { adminEventRouter } from "./routes/event.routes";
-import { adminUserRouter } from "./routes/v1.admin.routes.js";
+import { adminUserRouter } from "./routes/v1.admin.routes";
 import registrationRoutes, { userRegistrationRouter } from "./routes/registration.routes";
 import { stripeWebhookHandler } from "./routes/webhook.routes";
 import reviewRoutes, { userReviewRouter } from "./routes/review.routes";
@@ -76,6 +76,10 @@ app.use("/api/v1/invitations", userInvitationRouter);
 // Legacy health check (keep for backward compatibility with Render health checks)
 app.get("/api/health", (_req, res) => {
   res.json({ success: true, data: { status: "ok", timestamp: new Date().toISOString() } });
+});
+
+app.get("/", (req, res) => {
+  res.send("🚀 Planora API is running!");
 });
 
 // Global error handler -- MUST be last middleware (after all route mounts)
