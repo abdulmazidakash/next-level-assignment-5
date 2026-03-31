@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth, optionalAuth, requireAdmin } from "../middlewares/auth.js";
-import { validate, validateQuery } from "../middlewares/validate.js";
-import { createEventSchema, updateEventSchema } from "../schemas/event.schema.js";
-import { paginationSchema, searchSchema } from "../schemas/common.schema.js";
-import { eventService } from "../services/event.service.js";
-import { catchAsync } from "../utils/catch-async.js";
+import { requireAuth, optionalAuth, requireAdmin } from "../middlewares/auth";
+import { validate, validateQuery } from "../middlewares/validate";
+import { createEventSchema, updateEventSchema } from "../schemas/event.schema";
+import { paginationSchema, searchSchema } from "../schemas/common.schema";
+import { eventService } from "../services/event.service";
+import { catchAsync } from "../utils/catch-async";
 
 const router = Router();
 
@@ -350,7 +350,7 @@ router.get("/my", requireAuth, validateQuery(paginationSchema), catchAsync(async
  */
 router.get("/:id", optionalAuth, catchAsync(async (req, res) => {
   const userId = (req as any).user?.id;
-  const event = await eventService.getById(req.params.id, userId);
+  const event = await eventService.getById(req.params.id as string, userId);
   res.json({ success: true, data: event });
 }));
 
@@ -449,7 +449,7 @@ router.get("/:id", optionalAuth, catchAsync(async (req, res) => {
  */
 router.put("/:id", requireAuth, validate(updateEventSchema), catchAsync(async (req, res) => {
   const event = await eventService.update(
-    req.params.id,
+    req.params.id as string,
     req.body,
     (req as any).user.id,
   );
@@ -518,7 +518,7 @@ router.put("/:id", requireAuth, validate(updateEventSchema), catchAsync(async (r
  */
 router.delete("/:id", requireAuth, catchAsync(async (req, res) => {
   const result = await eventService.remove(
-    req.params.id,
+    req.params.id as string,
     (req as any).user.id,
   );
   res.json({ success: true, data: result });
@@ -658,7 +658,7 @@ adminEventRouter.get("/", requireAdmin, validateQuery(searchSchema), catchAsync(
  *               $ref: '#/components/schemas/RateLimitError'
  */
 adminEventRouter.delete("/:id", requireAdmin, catchAsync(async (req, res) => {
-  const result = await eventService.adminDelete(req.params.id);
+  const result = await eventService.adminDelete(req.params.id as string);
   res.json({ success: true, data: result });
 }));
 
@@ -706,7 +706,7 @@ adminEventRouter.delete("/:id", requireAdmin, catchAsync(async (req, res) => {
  *         description: Event not found
  */
 adminEventRouter.patch("/:id/featured", requireAdmin, catchAsync(async (req, res) => {
-  const result = await eventService.setFeatured(req.params.id);
+  const result = await eventService.setFeatured(req.params.id as string);
   res.json({ success: true, data: result });
 }));
 
@@ -734,7 +734,7 @@ adminEventRouter.patch("/:id/featured", requireAdmin, catchAsync(async (req, res
  *         description: Event not found
  */
 adminEventRouter.delete("/:id/featured", requireAdmin, catchAsync(async (req, res) => {
-  const result = await eventService.unsetFeatured(req.params.id);
+  const result = await eventService.unsetFeatured(req.params.id as string);
   res.json({ success: true, data: result });
 }));
 

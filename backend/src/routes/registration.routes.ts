@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/auth.js";
-import { validate, validateQuery } from "../middlewares/validate.js";
-import { updateRegistrationSchema } from "../schemas/registration.schema.js";
-import { paginationSchema } from "../schemas/common.schema.js";
-import { registrationService } from "../services/registration.service.js";
-import { catchAsync } from "../utils/catch-async.js";
+import { requireAuth } from "../middlewares/auth";
+import { validate, validateQuery } from "../middlewares/validate";
+import { updateRegistrationSchema } from "../schemas/registration.schema";
+import { paginationSchema } from "../schemas/common.schema";
+import { registrationService } from "../services/registration.service";
+import { catchAsync } from "../utils/catch-async";
 
 const router = Router({ mergeParams: true });
 
@@ -122,7 +122,7 @@ router.post("/", requireAuth, catchAsync(async (req, res) => {
       : `${frontendUrl}/events/${eventId}?payment=cancelled`;
 
   const result = await registrationService.register(
-    eventId,
+    eventId as string,
     userId,
     successUrl,
     cancelUrl,
@@ -220,7 +220,7 @@ router.get("/", requireAuth, validateQuery(paginationSchema), catchAsync(async (
   const { page, limit } = (req as any).validatedQuery;
 
   const result = await registrationService.listByEvent(
-    eventId,
+    eventId as string,
     userId,
     page,
     limit,
@@ -312,8 +312,8 @@ router.patch("/:registrationId", requireAuth, validate(updateRegistrationSchema)
   const userId = (req as any).user.id;
 
   const registration = await registrationService.updateStatus(
-    eventId,
-    registrationId,
+    eventId as string,
+    registrationId as string,
     req.body.status,
     userId,
   );

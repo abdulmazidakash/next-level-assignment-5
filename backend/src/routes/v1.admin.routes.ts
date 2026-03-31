@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { prisma } from "../lib/prisma.js";
-import { requireAdmin } from "../middlewares/auth.js";
-import { catchAsync } from "../utils/catch-async.js";
+import { prisma } from "../lib/prisma";
+import { requireAdmin } from "../middlewares/auth";
+import { catchAsync } from "../utils/catch-async";
 import type { Request, Response } from "express";
 
 export const adminUserRouter = Router();

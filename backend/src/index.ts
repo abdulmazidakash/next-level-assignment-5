@@ -1,21 +1,21 @@
-import { validateEnv } from "./utils/env.js";
+import { validateEnv } from "./utils/env";
 validateEnv();
 
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec, swaggerCssOverride } from "./config/swagger.js";
-import { apiLimiter, authLimiter } from "./middlewares/rate-limit.js";
-import { errorHandler } from "./middlewares/error-handler.js";
-import healthRoutes from "./routes/health.routes.js";
-import v1AuthRoutes from "./routes/v1.auth.routes.js";
-import eventRoutes, { adminEventRouter } from "./routes/event.routes.js";
+import { swaggerSpec, swaggerCssOverride } from "./config/swagger";
+import { apiLimiter, authLimiter } from "./middlewares/rate-limit";
+import { errorHandler } from "./middlewares/error-handler";
+import healthRoutes from "./routes/health.routes";
+import v1AuthRoutes from "./routes/v1.auth.routes";
+import eventRoutes, { adminEventRouter } from "./routes/event.routes";
 import { adminUserRouter } from "./routes/v1.admin.routes.js";
-import registrationRoutes, { userRegistrationRouter } from "./routes/registration.routes.js";
-import { stripeWebhookHandler } from "./routes/webhook.routes.js";
-import reviewRoutes, { userReviewRouter } from "./routes/review.routes.js";
-import invitationRoutes, { userInvitationRouter } from "./routes/invitation.routes.js";
+import registrationRoutes, { userRegistrationRouter } from "./routes/registration.routes";
+import { stripeWebhookHandler } from "./routes/webhook.routes";
+import reviewRoutes, { userReviewRouter } from "./routes/review.routes";
+import invitationRoutes, { userInvitationRouter } from "./routes/invitation.routes";
 
 const app = express();
 const PORT = process.env.PORT || 5001;

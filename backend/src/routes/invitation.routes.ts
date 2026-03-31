@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/auth.js";
-import { validate, validateQuery } from "../middlewares/validate.js";
-import { createInvitationSchema, respondInvitationSchema } from "../schemas/invitation.schema.js";
-import { paginationSchema } from "../schemas/common.schema.js";
-import { invitationService } from "../services/invitation.service.js";
-import { catchAsync } from "../utils/catch-async.js";
+import { requireAuth } from "../middlewares/auth";
+import { validate, validateQuery } from "../middlewares/validate";
+import { createInvitationSchema, respondInvitationSchema } from "../schemas/invitation.schema";
+import { paginationSchema } from "../schemas/common.schema";
+import { invitationService } from "../services/invitation.service";
+import { catchAsync } from "../utils/catch-async";
 
 const router = Router({ mergeParams: true });
 
@@ -88,7 +88,7 @@ router.post("/", requireAuth, validate(createInvitationSchema), catchAsync(async
   const eventId = req.params.eventId;
   const userId = (req as any).user.id;
 
-  const invitation = await invitationService.create(eventId, userId, req.body.email);
+  const invitation = await invitationService.create(eventId as string, userId, req.body.email);
   res.status(201).json({ success: true, data: invitation });
 }));
 
@@ -181,7 +181,7 @@ router.get("/", requireAuth, validateQuery(paginationSchema), catchAsync(async (
   const userId = (req as any).user.id;
   const { page, limit } = (req as any).validatedQuery;
 
-  const result = await invitationService.listByEvent(eventId, userId, page, limit);
+  const result = await invitationService.listByEvent(eventId as string, userId, page, limit);
   res.json({ success: true, data: result });
 }));
 
@@ -385,7 +385,7 @@ userInvitationRouter.post("/:invitationId/respond", requireAuth, validate(respon
   const { invitationId } = req.params;
 
   const result = await invitationService.respond(
-    invitationId,
+    invitationId as string,
     userId,
     req.body.action,
     req.body.successUrl,

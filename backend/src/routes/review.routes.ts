@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/auth.js";
-import { validate, validateQuery } from "../middlewares/validate.js";
-import { createReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
-import { paginationSchema } from "../schemas/common.schema.js";
-import { reviewService } from "../services/review.service.js";
-import { catchAsync } from "../utils/catch-async.js";
+import { requireAuth } from "../middlewares/auth";
+import { validate, validateQuery } from "../middlewares/validate";
+import { createReviewSchema, updateReviewSchema } from "../schemas/review.schema";
+import { paginationSchema } from "../schemas/common.schema";
+import { reviewService } from "../services/review.service";
+import { catchAsync } from "../utils/catch-async";
 
 // --- Event-scoped router (mounted at /api/v1/events/:eventId/reviews) ---
 
@@ -99,7 +99,7 @@ const router = Router({ mergeParams: true });
  */
 router.post("/", requireAuth, validate(createReviewSchema), catchAsync(async (req, res) => {
   const review = await reviewService.create(
-    req.params.eventId,
+    req.params.eventId as string,
     (req as any).user.id,
     req.body,
   );
@@ -173,7 +173,7 @@ router.post("/", requireAuth, validate(createReviewSchema), catchAsync(async (re
 router.get("/", validateQuery(paginationSchema), catchAsync(async (req, res) => {
   const { page, limit } = (req as any).validatedQuery;
   const result = await reviewService.listByEvent(
-    req.params.eventId,
+    req.params.eventId as string,
     page,
     limit,
   );
@@ -353,7 +353,7 @@ userReviewRouter.get("/my", requireAuth, validateQuery(paginationSchema), catchA
  */
 userReviewRouter.put("/:reviewId", requireAuth, validate(updateReviewSchema), catchAsync(async (req, res) => {
   const review = await reviewService.update(
-    req.params.reviewId,
+    req.params.reviewId as string,
     (req as any).user.id,
     req.body,
   );
@@ -422,7 +422,7 @@ userReviewRouter.put("/:reviewId", requireAuth, validate(updateReviewSchema), ca
  */
 userReviewRouter.delete("/:reviewId", requireAuth, catchAsync(async (req, res) => {
   const result = await reviewService.remove(
-    req.params.reviewId,
+    req.params.reviewId as string,
     (req as any).user.id,
   );
   res.json({ success: true, data: result });

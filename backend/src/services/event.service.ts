@@ -1,6 +1,6 @@
-import { prisma } from "../lib/prisma.js";
-import type { CreateEventInput, UpdateEventInput } from "../schemas/event.schema.js";
-import type { SearchInput } from "../schemas/common.schema.js";
+import { prisma } from "../lib/prisma";
+import type { CreateEventInput, UpdateEventInput } from "../schemas/event.schema";
+import type { SearchInput } from "../schemas/common.schema";
 
 const organizerSelect = {
   id: true,
