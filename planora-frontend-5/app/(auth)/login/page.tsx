@@ -71,7 +71,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left brand panel */}
-      <div className="hidden md:flex md:w-1/2 relative overflow-hidden bg-gradient-to-br from-orange-950 via-rose-950 to-amber-950">
+      <div className="hidden md:flex md:w-1/2 relative overflow-hidden bg-linear-to-br from-orange-950 via-rose-950 to-amber-950">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-orange-500/15 blur-3xl" />
           <div className="absolute bottom-20 right-20 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl" />
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
       {/* Right form panel */}
       <div className="flex w-full md:w-1/2 items-center justify-center px-6 sm:px-12 py-12 bg-background">
-        <div className="w-full max-w-[420px] space-y-8">
+        <div className="w-full max-w-105 space-y-8">
           {/* Mobile logo */}
           <Link href="/" className="flex items-center gap-3 md:hidden hover:opacity-80 transition-opacity">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
