@@ -39,7 +39,7 @@ export function AdminSidebar() {
   };
 
   return (
-    <div className="[&_[data-active=true]]:bg-destructive/10 [&_[data-active=true]]:text-destructive">
+    <div className="**:data-[active=true]:bg-destructive/10 **:data-[active=true]:text-destructive">
       <Sidebar>
         <SidebarHeader className="px-4 py-4">
           <div className="flex items-center justify-between">

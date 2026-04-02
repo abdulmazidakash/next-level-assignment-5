@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { LayoutRouterContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useSelectedLayoutSegment } from "next/navigation";
 

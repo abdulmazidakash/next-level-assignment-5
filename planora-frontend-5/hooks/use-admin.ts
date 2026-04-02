@@ -11,7 +11,7 @@ export function useAdminUsers(params?: { limit?: number; offset?: number }) {
     queryKey: ["admin", "users", params],
     queryFn: () =>
       apiFetch<{ users: any[]; total: number }>(
-        `/api/v1/admin/users?limit=${params?.limit ?? 20}&offset=${params?.offset ?? 0}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users?limit=${params?.limit ?? 20}&offset=${params?.offset ?? 0}`
       ),
   });
 }
@@ -44,7 +44,7 @@ export function useAdminEvents(params?: AdminEventListParams) {
   return useQuery({
     queryKey: ["admin", "events", params],
     queryFn: () =>
-      apiFetch<AdminEventListResponse>(`/api/v1/admin/events${qs ? `?${qs}` : ""}`),
+      apiFetch<AdminEventListResponse>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/events${qs ? `?${qs}` : ""}`),
   });
 }
 
@@ -52,7 +52,7 @@ export function useAdminRemoveUser() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (userId: string) =>
-      apiFetch<unknown>(`/api/v1/admin/users/${userId}`, {
+      apiFetch<unknown>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/users/${userId}`, {
         method: "DELETE",
       }),
     onSuccess: () => {
@@ -69,7 +69,7 @@ export function useAdminDeleteEvent() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (eventId: string) =>
-      apiFetch<unknown>(`/api/v1/admin/events/${eventId}`, {
+      apiFetch<unknown>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/events/${eventId}`, {
         method: "DELETE",
       }),
     onSuccess: () => {
@@ -87,7 +87,7 @@ export function useAdminSetFeatured() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (eventId: string) =>
-      apiFetch<unknown>(`/api/v1/admin/events/${eventId}/featured`, {
+      apiFetch<unknown>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/events/${eventId}/featured`, {
         method: "PATCH",
       }),
     onSuccess: () => {
@@ -105,7 +105,7 @@ export function useAdminUnsetFeatured() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (eventId: string) =>
-      apiFetch<unknown>(`/api/v1/admin/events/${eventId}/featured`, {
+      apiFetch<unknown>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/events/${eventId}/featured`, {
         method: "DELETE",
       }),
     onSuccess: () => {

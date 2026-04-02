@@ -27,9 +27,9 @@ app.set("trust proxy", 1);
 // CORS configuration -- must come before all route handlers
 app.use(cors({
   origin: [
-    process.env.FRONTEND_URL || "http://localhost:3000",
-    "http://localhost:3000",
-  ],
+  process.env.FRONTEND_URL!,
+  "http://localhost:3000",
+],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));

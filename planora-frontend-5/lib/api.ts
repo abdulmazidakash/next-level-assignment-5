@@ -32,15 +32,47 @@ function buildErrorMessage(
   return `${message} — ${summary}${extra}`;
 }
 
+// export async function apiFetch<T>(
+//   url: string,
+//   options?: RequestInit,
+// ): Promise<T> {
+//   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+//   const headers: Record<string, string> = {
+//     "Content-Type": "application/json",
+//     ...(options?.headers as Record<string, string>),
+//   };
+//   if (token) {
+//     headers["Authorization"] = `Bearer ${token}`;
+//   }
+
+//   const res = await fetch(url, {
+//     ...options,
+//     headers,
+//   });
+//   const json = await res.json();
+//   if (!json.success) {
+//     const details = json.error?.details as ValidationDetail[] | undefined;
+//     throw new ApiError(
+//       res.status,
+//       json.error?.code || "UNKNOWN",
+//       buildErrorMessage(json.error?.message || "Something went wrong", details),
+//       details,
+//     );
+//   }
+//   return json.data as T;
+// }
 export async function apiFetch<T>(
   url: string,
   options?: RequestInit,
 ): Promise<T> {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options?.headers as Record<string, string>),
   };
+
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -49,15 +81,35 @@ export async function apiFetch<T>(
     ...options,
     headers,
   });
-  const json = await res.json();
-  if (!json.success) {
-    const details = json.error?.details as ValidationDetail[] | undefined;
+
+  let json;
+
+  try {
+    json = await res.json();
+  } catch (err) {
+    console.error("❌ Failed to parse JSON:", err);
+    throw new Error("Invalid server response");
+  }
+
+
+  console.log("🌐 API URL:", url);
+  console.log("📦 Request:", options);
+  console.log("📥 Response status:", res.status);
+  console.log("📄 Response body:", json);
+
+  if (!res.ok || !json.success) {
+    const details = json?.error?.details as ValidationDetail[] | undefined;
+
     throw new ApiError(
       res.status,
-      json.error?.code || "UNKNOWN",
-      buildErrorMessage(json.error?.message || "Something went wrong", details),
-      details,
+      json?.error?.code || "UNKNOWN",
+      buildErrorMessage(
+        json?.error?.message || "Something went wrong",
+        details
+      ),
+      details
     );
   }
+
   return json.data as T;
 }

@@ -11,7 +11,7 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write .",
     "db:seed": "npx prisma db seed",
-    "stripe:webhook": "stripe listen --forward-to localhost:5001/webhook"
+    "stripe:webhook": "stripe listen --forward-to localhost:5001/api/webhooks/stripe"
   },
   "keywords": [
     "express",
