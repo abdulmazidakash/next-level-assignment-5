@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -46,7 +45,7 @@ export default function SettingsPage() {
     if (!user) return;
     async function fetchPrefs() {
       try {
-        const data = await apiFetch<NotificationPrefs>(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/notifications`);
+        const data = await apiFetch<NotificationPrefs>("/api/v1/auth/notifications");
         setPrefs(data);
       } catch {
         // Keep defaults
@@ -248,7 +247,7 @@ export default function SettingsPage() {
                       <Switch
                         id="notify-approvals"
                         checked={prefs.notifyApprovals}
-                        onCheckedChange={(v: any) => handleTogglePref("notifyApprovals", v)}
+                        onCheckedChange={(v) => handleTogglePref("notifyApprovals", v)}
                         disabled={prefsUpdating}
                       />
                     </div>
@@ -263,7 +262,7 @@ export default function SettingsPage() {
                       <Switch
                         id="notify-reviews"
                         checked={prefs.notifyReviews}
-                        onCheckedChange={(v: any) => handleTogglePref("notifyReviews", v)}
+                        onCheckedChange={(v) => handleTogglePref("notifyReviews", v)}
                         disabled={prefsUpdating}
                       />
                     </div>

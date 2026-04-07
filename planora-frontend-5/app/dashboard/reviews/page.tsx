@@ -11,7 +11,7 @@ import {
 } from "@/hooks/use-reviews";
 import { StarRating } from "@/components/events/star-rating";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import {

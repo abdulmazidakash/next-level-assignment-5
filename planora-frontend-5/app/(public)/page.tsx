@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
 import { EventCard } from "@/components/events/event-card";
 import { EventCardSkeleton } from "@/components/events/event-card-skeleton";
 import { AnimatedSection } from "@/components/shared/animated-section";
@@ -251,13 +251,13 @@ export default function HomePage() {
           ) : gridEvents.length > 0 ? (
             <div className="overflow-hidden py-1">
               <div
-                className="flex gap-6 animate-scroll hover:paused"
+                className="flex gap-6 animate-scroll hover:[animation-play-state:paused]"
                 style={{
                   width: "max-content",
                 }}
               >
                 {[...gridEvents, ...gridEvents].map((event, i) => (
-                  <div key={`${event.id}-${i}`} className="w-85 shrink-0">
+                  <div key={`${event.id}-${i}`} className="w-[340px] shrink-0">
                     <EventCard event={event} />
                   </div>
                 ))}
