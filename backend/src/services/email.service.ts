@@ -1,5 +1,6 @@
-import { resend } from "../lib/mailer";
-import { prisma } from "../lib/prisma";
+import { resend } from "../lib/mailer.js";
+import { prisma } from "../lib/prisma.js";
+
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 

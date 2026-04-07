@@ -32,35 +32,8 @@ function buildErrorMessage(
   return `${message} — ${summary}${extra}`;
 }
 
-// export async function apiFetch<T>(
-//   url: string,
-//   options?: RequestInit,
-// ): Promise<T> {
-//   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-//   const headers: Record<string, string> = {
-//     "Content-Type": "application/json",
-//     ...(options?.headers as Record<string, string>),
-//   };
-//   if (token) {
-//     headers["Authorization"] = `Bearer ${token}`;
-//   }
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-//   const res = await fetch(url, {
-//     ...options,
-//     headers,
-//   });
-//   const json = await res.json();
-//   if (!json.success) {
-//     const details = json.error?.details as ValidationDetail[] | undefined;
-//     throw new ApiError(
-//       res.status,
-//       json.error?.code || "UNKNOWN",
-//       buildErrorMessage(json.error?.message || "Something went wrong", details),
-//       details,
-//     );
-//   }
-//   return json.data as T;
-// }
 export async function apiFetch<T>(
   url: string,
   options?: RequestInit,
@@ -77,12 +50,16 @@ export async function apiFetch<T>(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, {
+  const fullUrl = url.startsWith("http")
+    ? url
+    : `${API_BASE_URL}${url}`;
+
+  const res = await fetch(fullUrl, {
     ...options,
     headers,
   });
 
-  let json;
+  let json: any;
 
   try {
     json = await res.json();
@@ -91,8 +68,7 @@ export async function apiFetch<T>(
     throw new Error("Invalid server response");
   }
 
-
-  console.log("🌐 API URL:", url);
+  console.log("🌐 API URL:", fullUrl);
   console.log("📦 Request:", options);
   console.log("📥 Response status:", res.status);
   console.log("📄 Response body:", json);

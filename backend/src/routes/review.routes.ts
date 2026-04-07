@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/auth";
-import { validate, validateQuery } from "../middlewares/validate";
-import { createReviewSchema, updateReviewSchema } from "../schemas/review.schema";
-import { paginationSchema } from "../schemas/common.schema";
-import { reviewService } from "../services/review.service";
-import { catchAsync } from "../utils/catch-async";
+import { requireAuth } from "../middlewares/auth.js";
+import { validate, validateQuery } from "../middlewares/validate.js";
+import { catchAsync } from "../utils/catch-async.js";
+import { paginationSchema } from "../schemas/common.schema.js";
+import { createReviewSchema, updateReviewSchema } from "../schemas/review.schema.js";
+import { reviewService } from "../services/review.service.js";
 
 // --- Event-scoped router (mounted at /api/v1/events/:eventId/reviews) ---
 

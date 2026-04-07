@@ -1,22 +1,23 @@
-import "./utils/env";
-import { validateEnv } from "./utils/env";
+import "./utils/env.js";
+import { validateEnv } from "./utils/env.js";
 
-validateEnv();
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec, swaggerCssOverride } from "./config/swagger";
-import { apiLimiter, authLimiter } from "./middlewares/rate-limit";
-import { errorHandler } from "./middlewares/error-handler";
-import healthRoutes from "./routes/health.routes";
-import v1AuthRoutes from "./routes/v1.auth.routes";
-import eventRoutes, { adminEventRouter } from "./routes/event.routes";
-import { adminUserRouter } from "./routes/v1.admin.routes";
-import registrationRoutes, { userRegistrationRouter } from "./routes/registration.routes";
-import { stripeWebhookHandler } from "./routes/webhook.routes";
-import reviewRoutes, { userReviewRouter } from "./routes/review.routes";
-import invitationRoutes, { userInvitationRouter } from "./routes/invitation.routes";
+
+import { swaggerSpec, swaggerCssOverride } from "./config/swagger.js";
+import { apiLimiter, authLimiter } from "./middlewares/rate-limit.js";
+import { errorHandler } from "./middlewares/error-handler.js";
+
+import healthRoutes from "./routes/health.routes.js";
+import v1AuthRoutes from "./routes/v1.auth.routes.js";
+import eventRoutes, { adminEventRouter } from "./routes/event.routes.js";
+import { adminUserRouter } from "./routes/v1.admin.routes.js";
+import registrationRoutes, { userRegistrationRouter } from "./routes/registration.routes.js";
+import { stripeWebhookHandler } from "./routes/webhook.routes.js";
+import reviewRoutes, { userReviewRouter } from "./routes/review.routes.js";
+import invitationRoutes, { userInvitationRouter } from "./routes/invitation.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -26,11 +27,21 @@ const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 app.set("trust proxy", 1);
 
 // CORS configuration -- must come before all route handlers
-app.use(cors({
-  origin: [
-  process.env.FRONTEND_URL!,
+// app.use(cors({
+//   origin: [
+//   process.env.FRONTEND_URL!,
+//   "http://localhost:3000",
+// ],
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+// }));
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
   "http://localhost:3000",
-],
+].filter(Boolean) as string[];
+
+app.use(cors({
+  origin: allowedOrigins,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));

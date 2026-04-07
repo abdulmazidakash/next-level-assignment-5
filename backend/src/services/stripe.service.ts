@@ -1,5 +1,6 @@
-import { stripe } from "../lib/stripe";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
+import { stripe } from "../lib/stripe.js";
+
 
 interface CreateCheckoutParams {
   eventId: string;

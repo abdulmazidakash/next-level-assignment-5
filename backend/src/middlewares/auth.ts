@@ -1,5 +1,5 @@
-import { verifyToken } from "../lib/jwt";
 import type { Request, Response, NextFunction } from "express";
+import { verifyToken } from "../lib/jwt.js";
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;

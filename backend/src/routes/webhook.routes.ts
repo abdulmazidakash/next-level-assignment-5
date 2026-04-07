@@ -1,5 +1,6 @@
-import { stripeService } from "../services/stripe.service";
+
 import type { Request, Response } from "express";
+import { stripeService } from "../services/stripe.service.js";
 
 /**
  * @swagger

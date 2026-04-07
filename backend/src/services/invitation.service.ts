@@ -1,6 +1,7 @@
-import { prisma } from "../lib/prisma";
-import { stripeService } from "./stripe.service";
-import { emailService } from "./email.service";
+import { prisma } from "../lib/prisma.js";
+import { emailService } from "./email.service.js";
+import { stripeService } from "./stripe.service.js";
+
 
 async function create(eventId: string, senderId: string, email: string) {
   const event = await prisma.event.findUnique({ where: { id: eventId } });
@@ -191,7 +192,7 @@ async function getMyInvitations(userId: string, page: number, limit: number) {
 
   // Attach registration status for each invitation's event
   const invitations = await Promise.all(
-    rawInvitations.map(async (inv) => {
+    rawInvitations.map(async (inv: any) => {
       const registration = await prisma.registration.findUnique({
         where: { userId_eventId: { userId, eventId: inv.eventId } },
         select: { status: true },

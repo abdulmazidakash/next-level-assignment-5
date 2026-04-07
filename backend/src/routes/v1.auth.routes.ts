@@ -1,10 +1,10 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import { prisma } from "../lib/prisma";
-import { signToken } from "../lib/jwt";
-import { requireAuth } from "../middlewares/auth";
-import { catchAsync } from "../utils/catch-async";
+import { requireAuth } from "../middlewares/auth.js";
+import { catchAsync } from "../utils/catch-async.js";
 import type { Request, Response } from "express";
+import { prisma } from "../lib/prisma.js";
+import { signToken } from "../lib/jwt.js";
 
 const router = Router();
 

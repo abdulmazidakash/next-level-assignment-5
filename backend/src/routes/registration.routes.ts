@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/auth";
-import { validate, validateQuery } from "../middlewares/validate";
-import { updateRegistrationSchema } from "../schemas/registration.schema";
-import { paginationSchema } from "../schemas/common.schema";
-import { registrationService } from "../services/registration.service";
-import { catchAsync } from "../utils/catch-async";
+import { requireAuth } from "../middlewares/auth.js";
+import { validate, validateQuery } from "../middlewares/validate.js";
+import { catchAsync } from "../utils/catch-async.js";
+import { paginationSchema } from "../schemas/common.schema.js";
+import { registrationService } from "../services/registration.service.js";
+import { updateRegistrationSchema } from "../schemas/registration.schema.js";
 
 const router = Router({ mergeParams: true });
 

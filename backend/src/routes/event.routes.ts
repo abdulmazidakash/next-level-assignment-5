@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { requireAuth, optionalAuth, requireAdmin } from "../middlewares/auth";
-import { validate, validateQuery } from "../middlewares/validate";
-import { createEventSchema, updateEventSchema } from "../schemas/event.schema";
-import { paginationSchema, searchSchema } from "../schemas/common.schema";
-import { eventService } from "../services/event.service";
-import { catchAsync } from "../utils/catch-async";
+import { optionalAuth, requireAdmin, requireAuth } from "../middlewares/auth.js";
+import { validate, validateQuery } from "../middlewares/validate.js";
+import { createEventSchema, updateEventSchema } from "../schemas/event.schema.js";
+import { catchAsync } from "../utils/catch-async.js";
+import { eventService } from "../services/event.service.js";
+import { paginationSchema, searchSchema } from "../schemas/common.schema.js";
+
 
 const router = Router();
 

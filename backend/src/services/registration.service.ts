@@ -1,6 +1,7 @@
-import { prisma } from "../lib/prisma";
-import { stripeService } from "./stripe.service";
-import { emailService } from "./email.service";
+import { prisma } from "../lib/prisma.js";
+import { emailService } from "./email.service.js";
+import { stripeService } from "./stripe.service.js";
+
 
 async function register(
   eventId: string,

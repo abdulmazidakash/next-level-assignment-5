@@ -1,6 +1,7 @@
-import { prisma } from "../lib/prisma";
-import type { CreateReviewInput, UpdateReviewInput } from "../schemas/review.schema";
-import { emailService } from "./email.service";
+import { prisma } from "../lib/prisma.js";
+import { CreateReviewInput, UpdateReviewInput } from "../schemas/review.schema.js";
+import { emailService } from "./email.service.js";
+
 
 const userSelect = {
   id: true,
