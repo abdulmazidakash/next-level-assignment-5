@@ -1,15 +1,11 @@
-import "./utils/env.js";
 import { validateEnv } from "./utils/env.js";
+validateEnv();
 
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
-
 import { swaggerSpec, swaggerCssOverride } from "./config/swagger.js";
-import { apiLimiter, authLimiter } from "./middlewares/rate-limit.js";
-import { errorHandler } from "./middlewares/error-handler.js";
-
 import healthRoutes from "./routes/health.routes.js";
 import v1AuthRoutes from "./routes/v1.auth.routes.js";
 import eventRoutes, { adminEventRouter } from "./routes/event.routes.js";
@@ -18,6 +14,8 @@ import registrationRoutes, { userRegistrationRouter } from "./routes/registratio
 import { stripeWebhookHandler } from "./routes/webhook.routes.js";
 import reviewRoutes, { userReviewRouter } from "./routes/review.routes.js";
 import invitationRoutes, { userInvitationRouter } from "./routes/invitation.routes.js";
+import { apiLimiter, authLimiter } from "./middlewares/rate-limit.js";
+import { errorHandler } from "./middlewares/error-handler.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -27,21 +25,11 @@ const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 app.set("trust proxy", 1);
 
 // CORS configuration -- must come before all route handlers
-// app.use(cors({
-//   origin: [
-//   process.env.FRONTEND_URL!,
-//   "http://localhost:3000",
-// ],
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-// }));
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:3000",
-].filter(Boolean) as string[];
-
 app.use(cors({
-  origin: allowedOrigins,
+  origin: [
+    process.env.FRONTEND_URL || "http://localhost:3000",
+    "http://localhost:3000",
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));
@@ -88,10 +76,6 @@ app.use("/api/v1/invitations", userInvitationRouter);
 // Legacy health check (keep for backward compatibility with Render health checks)
 app.get("/api/health", (_req, res) => {
   res.json({ success: true, data: { status: "ok", timestamp: new Date().toISOString() } });
-});
-
-app.get("/", (req, res) => {
-  res.send("🚀 Planora API is running!");
 });
 
 // Global error handler -- MUST be last middleware (after all route mounts)
