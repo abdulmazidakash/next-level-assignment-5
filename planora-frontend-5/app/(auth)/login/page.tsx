@@ -71,16 +71,16 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left brand panel */}
-      <div className="hidden md:flex md:w-1/2 relative overflow-hidden bg-gradient-to-br from-orange-950 via-rose-950 to-amber-950">
+      <div className="hidden md:flex md:w-1/2 relative overflow-hidden bg-linear-to-br from-emerald-950 via-green-950 to-amber-950">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-orange-500/15 blur-3xl" />
+          <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-emerald-500/15 blur-3xl" />
           <div className="absolute bottom-20 right-20 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-rose-500/10 blur-3xl" />
         </div>
         <div className="relative z-10 flex flex-col justify-between p-12 text-white">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/20 backdrop-blur-sm border border-orange-400/20">
-              <CalendarDays className="h-5 w-5 text-orange-300" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/20">
+              <CalendarDays className="h-5 w-5 text-emerald-300" />
             </div>
             <span className="text-xl font-semibold tracking-tight">Planora</span>
           </Link>
@@ -90,25 +90,25 @@ export default function LoginPage() {
               Connect with people.<br />
               Make it happen.
             </h2>
-            <p className="text-lg text-orange-200/60 max-w-md">
+            <p className="text-lg text-emerald-200/60 max-w-md">
               Join thousands of event organizers and attendees creating memorable experiences together.
             </p>
             <div className="flex gap-8 pt-4">
               <div>
-                <p className="text-2xl font-bold text-orange-100">500+</p>
-                <p className="text-sm text-orange-300/50">Events hosted</p>
+                <p className="text-2xl font-bold text-emerald-100">500+</p>
+                <p className="text-sm text-emerald-300/50">Events hosted</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-orange-100">10K+</p>
-                <p className="text-sm text-orange-300/50">Active users</p>
+                <p className="text-2xl font-bold text-emerald-100">10K+</p>
+                <p className="text-sm text-emerald-300/50">Active users</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-orange-100">98%</p>
-                <p className="text-sm text-orange-300/50">Satisfaction</p>
+                <p className="text-2xl font-bold text-emerald-100">98%</p>
+                <p className="text-sm text-emerald-300/50">Satisfaction</p>
               </div>
             </div>
           </div>
-          <p className="text-sm text-orange-300/30">
+          <p className="text-sm text-emerald-300/30">
             &copy; {new Date().getFullYear()} Planora. All rights reserved.
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
       {/* Right form panel */}
       <div className="flex w-full md:w-1/2 items-center justify-center px-6 sm:px-12 py-12 bg-background">
-        <div className="w-full max-w-[420px] space-y-8">
+        <div className="w-full max-w-105 space-y-8">
           {/* Mobile logo */}
           <Link href="/" className="flex items-center gap-3 md:hidden hover:opacity-80 transition-opacity">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
@@ -144,7 +144,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@example.com"
+                  placeholder="name@planora.com"
                   value={email}
                   onChange={(e) => {
                     const val = e.target.value;

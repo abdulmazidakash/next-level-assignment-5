@@ -43,7 +43,7 @@ export function Navbar() {
     cn(
       "text-sm transition-colors",
       isActive(href)
-        ? "text-primary font-semibold"
+        ? "text-emerald-500 font-semibold"
         : "text-muted-foreground hover:text-foreground"
     );
 
@@ -58,8 +58,8 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-            <CalendarDays className="h-5 w-5 text-primary-foreground" />
+          <div className="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center">
+            <CalendarDays className="h-5 w-5 text-emerald-foreground" />
           </div>
           <span className="font-semibold text-xl">Planora</span>
         </Link>
@@ -132,8 +132,8 @@ export function Navbar() {
               <SheetHeader>
                 <SheetTitle>
                   <Link href="/" className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-                      <CalendarDays className="h-5 w-5 text-primary-foreground" />
+                    <div className="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center">
+                      <CalendarDays className="h-5 w-5 text-emerald-foreground" />
                     </div>
                     <span className="font-semibold text-xl">Planora</span>
                   </Link>

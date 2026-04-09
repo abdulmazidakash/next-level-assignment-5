@@ -10,22 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { EventCardProps } from "@/types/event";
 
-interface EventCardProps {
-  event: {
-    id: string;
-    title: string;
-    date: string;
-    time: string;
-    venue: string;
-    type: string;
-    fee: number;
-    visibility: string;
-    organizer: { name: string };
-    _count?: { registrations: number };
-    averageRating?: number;
-  };
-}
+
 
 export function EventCard({ event }: EventCardProps) {
   const formattedDate = new Date(event.date).toLocaleDateString("en-US", {

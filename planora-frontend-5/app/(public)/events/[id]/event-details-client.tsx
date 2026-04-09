@@ -52,32 +52,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { EventDetail } from "@/types/event";
+import { Review } from "@/types/review";
+import EventLoading from "@/components/events/EventLoading";
+import EventError from "@/components/events/EventError";
 
-interface EventDetail {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  venue: string;
-  type: string;
-  fee: number;
-  visibility: string;
-  organizerId: string;
-  organizer: { id: string; name: string };
-  _count: { registrations: number };
-  averageRating: number;
-  reviewCount: number;
-  userRegistration?: { id: string; status: string } | null;
-}
 
-interface Review {
-  id: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  user: { id: string; name: string };
-}
+
+
 
 function getActionState(
   event: EventDetail,
@@ -163,58 +145,14 @@ export function EventDetailsClient({ eventId }: { eventId: string }) {
   // Loading state
   if (eventLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <Skeleton className="h-8 w-[50%]" />
-        <div className="flex flex-wrap gap-4">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-        <Skeleton className="h-5 w-48" />
-        <Skeleton className="h-10 w-36" />
-        <div className="space-y-2 mt-8">
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-4 w-[90%]" />
-          <Skeleton className="h-4 w-[85%]" />
-          <Skeleton className="h-4 w-[80%]" />
-          <Skeleton className="h-4 w-[60%]" />
-        </div>
-        <div className="space-y-4 mt-8">
-          <Skeleton className="h-6 w-32" />
-          {[1, 2, 3].map((i) => (
-            <Card key={i}>
-              <CardContent className="pt-6 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-                <Skeleton className="h-4 w-[70%]" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <EventLoading/>
     );
   }
 
   // Error / Not found state
   if (eventError || !event) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Event not found
-        </h1>
-        <p className="text-muted-foreground mt-3">
-          The event you&apos;re looking for doesn&apos;t exist or has been
-          removed.
-        </p>
-        <Link href="/events">
-          <Button variant="outline" className="mt-6">
-            Browse Events
-          </Button>
-        </Link>
-      </div>
+      <EventError/>
     );
   }
 
