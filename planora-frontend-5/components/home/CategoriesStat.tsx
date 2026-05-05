@@ -14,7 +14,7 @@ export default function CategoriesStat({ categories, categoryCounts }: Props) {
     return (
         <div>
         <section className="relative py-20 sm:py-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/30 via-transparent to-amber-50/30 dark:from-emerald-950/10 dark:to-amber-950/10" />
+          <div className="absolute inset-0 bg-linear-to-br from-emerald-50/30 via-transparent to-amber-50/30 dark:from-emerald-950/10 dark:to-amber-950/10" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
@@ -44,11 +44,11 @@ export default function CategoriesStat({ categories, categoryCounts }: Props) {
                   >
                     <Card className="group relative overflow-hidden rounded-2xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-card">
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${gradients[idx]} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                        className={`absolute inset-0 bg-linear-to-br ${gradients[idx]} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                       />
                       <CardContent className="p-8 relative">
                         <div
-                          className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${gradients[idx]} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                          className={`h-14 w-14 rounded-2xl bg-linear-to-br ${gradients[idx]} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
                         >
                           <Icon className="h-7 w-7 text-white" />
                         </div>

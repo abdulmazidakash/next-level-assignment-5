@@ -54,7 +54,7 @@ export function Navbar() {
   const userInitial = user?.name?.charAt(0).toUpperCase() || "U";
 
   return (
-    <nav className="border-b bg-background" aria-label="Main navigation">
+    <nav className="border-b bg-background sticky top-0 z-50" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">

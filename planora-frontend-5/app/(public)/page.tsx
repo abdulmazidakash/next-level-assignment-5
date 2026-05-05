@@ -31,6 +31,11 @@ import { EventCardEvent, FeaturedEventType } from "@/types/event";
 import CategoriesStat from "@/components/home/CategoriesStat";
 import TickerStripe from "@/components/shared/TickerStripe";
 import TickerStripeReverse from "@/components/shared/TickerStripeReverse";
+import HowItWorks from "@/components/home/HowItWorks";
+import StatsSection from "@/components/home/StatsSection";
+import Testimonials from "@/components/home/Testimonials";
+import Newsletter from "@/components/home/Newsletter";
+import FAQPreview from "@/components/home/FAQPreview";
 
 const categories = [
   { icon: Globe, label: "Public Free", visibility: "PUBLIC", type: "FREE" },
@@ -98,12 +103,12 @@ export default function HomePage() {
     <main id="main-content" className="overflow-hidden">
       {/* ───── Hero ───── */}
       <AnimatedSection>
-        <section className="relative min-h-[90vh] flex items-center">
+        <section className="relative min-h-[70vh] flex items-center">
           <div className="absolute inset-0 bg-linear-to-br from-emerald-50/60 via-background to-amber-50/40 dark:from-emerald-950/20 dark:to-amber-950/10" />
           <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-400/15 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl animate-pulse delay-1000" />
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
               {/* Left */}
               <div className="w-full lg:w-1/2 space-y-8">
@@ -382,6 +387,13 @@ export default function HomePage() {
 
       {/* ───── Second Ticker (before CTA) ───── */}
       <TickerStripe />
+
+       {/* New sections */}
+      <HowItWorks />
+      <StatsSection />
+      <Testimonials />
+      <Newsletter />
+      <FAQPreview />
 
       {/* ───── CTA ───── */}
       <AnimatedSection>
