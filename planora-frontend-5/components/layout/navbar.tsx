@@ -28,6 +28,8 @@ import {
 const publicLinks = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {
